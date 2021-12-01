@@ -171,20 +171,36 @@ namespace SIACODERGR {
 			this-> label2->Text += "\n";
 		}
 		nodes[0] = 0;
-		int min = std::numeric_limits<int>::max(), mini = 0;
-		for(int i = 0; i < N; i++){
-			for(int j = 0; j < N; j++){
-				if(!flags[j]){
-					if((graph[i][j] != 0)&&(graph[i][j] < nodes[j])){
-						nodes[j] = graph[i][j];
-					}
-				}
+		int min = std::numeric_limits<int>::max(), minI = 0;
+		/*for(int j = 0; j < N; j++){
+			if((graph[0][j] != 0) && (graph[0][j] < nodes[j])){
+				nodes[j] = graph[0][j];
 			}
-			flags[i] = true;
-			nodes[i] = nodes[i];
 		}
 		for(int i = 0; i < N; i++){
 			this->label3->Text = this->label3->Text + nodes[i] + " ";
+		}
+		flags[0] = true;*/
+		for(int i = 0; i < N; i++){
+			min = std::numeric_limits<int>::max(), minI = 0;
+			this->label3->Text = "";
+			for(int j = 0; j < N; j++){
+				if((!flags[j])&&(nodes[j] < min)){
+					min = nodes[j];
+					minI = j;
+				}
+			}
+			for(int j = 0; j < N; j++){
+				if(!flags[j]){
+					if((graph[minI][j] != 0) && ((graph[minI][j]+nodes[minI]) < nodes[j])){
+						nodes[j] = graph[minI][j] + nodes[minI];
+					}
+				}
+			}
+			for(int o = 0; o < N; o++){
+				this->label3->Text += nodes[o] + " ";
+			}
+			flags[minI] = true;
 		}
 	}
 	private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e){
