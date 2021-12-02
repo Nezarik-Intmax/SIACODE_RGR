@@ -43,8 +43,17 @@ namespace SIACODERGR {
 			}
 		}
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::Label^ label2;
+
 	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::NumericUpDown^ numericUpDown1;
+
+
+
+
+
+
 	protected:
 
 	private:
@@ -62,8 +71,11 @@ namespace SIACODERGR {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// label1
@@ -77,17 +89,6 @@ namespace SIACODERGR {
 			this->label1->TabIndex = 0;
 			this->label1->Text = resources->GetString(L"label1.Text");
 			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(57, 220);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(0, 20);
-			this->label2->TabIndex = 1;
-			this->label2->Click += gcnew System::EventHandler(this, &MyForm::label2_Click);
-			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
@@ -98,17 +99,51 @@ namespace SIACODERGR {
 			this->label3->Size = System::Drawing::Size(0, 20);
 			this->label3->TabIndex = 2;
 			// 
+			// button1
+			// 
+			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button1->Location = System::Drawing::Point(655, 71);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(149, 43);
+			this->button1->TabIndex = 3;
+			this->button1->Text = L"Подсчитать";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
+			// 
+			// textBox1
+			// 
+			this->textBox1->Location = System::Drawing::Point(824, 173);
+			this->textBox1->Name = L"textBox1";
+			this->textBox1->Size = System::Drawing::Size(100, 20);
+			this->textBox1->TabIndex = 4;
+			this->textBox1->Tag = L"1";
+			// 
+			// numericUpDown1
+			// 
+			this->numericUpDown1->Location = System::Drawing::Point(16, 173);
+			this->numericUpDown1->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4){ 10, 0, 0, 0 });
+			this->numericUpDown1->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4){ 3, 0, 0, 0 });
+			this->numericUpDown1->Name = L"numericUpDown1";
+			this->numericUpDown1->Size = System::Drawing::Size(120, 20);
+			this->numericUpDown1->TabIndex = 5;
+			this->numericUpDown1->Value = System::Decimal(gcnew cli::array< System::Int32 >(4){ 3, 0, 0, 0 });
+			this->numericUpDown1->ValueChanged += gcnew System::EventHandler(this, &MyForm::numericUpDown1_ValueChanged);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(931, 580);
+			this->Controls->Add(this->numericUpDown1);
+			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label3);
-			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -119,80 +154,56 @@ namespace SIACODERGR {
 	int **graph;
 	int *nodes;
 	bool *flags;
-	int N = 5;
+	int N = 3;
+	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBox;
+	//System::Windows::Forms::TextBox ^graphTxtBox[N];
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e){
 		graph = new int*[N];
-		graph[0] = new int[N];
-		graph[1] = new int[N];
-		graph[2] = new int[N];
-		graph[3] = new int[N];
-		graph[4] = new int[N];
-
-		graph[0][0] = 0;
-		graph[0][1] = 10;
-		graph[0][2] = 30;
-		graph[0][3] = 50;
-		graph[0][4] = 10;
-
-		graph[1][0] = 0;
-		graph[1][1] = 0;
-		graph[1][2] = 0;
-		graph[1][3] = 0;
-		graph[1][4] = 0;
-
-		graph[2][0] = 0;
-		graph[2][1] = 0;
-		graph[2][2] = 0;
-		graph[2][3] = 0;
-		graph[2][4] = 10;
-
-		graph[3][0] = 0;
-		graph[3][1] = 40;
-		graph[3][2] = 20;
-		graph[3][3] = 0;
-		graph[3][4] = 0;
-
-
-		graph[4][0] = 10;
-		graph[4][1] = 0;
-		graph[4][2] = 10;
-		graph[4][3] = 30;
-		graph[4][4] = 0;
-
 		nodes = new int[N];
 		flags = new bool[N];
+		graphTxtBox = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
 
 		for(int i = 0; i < N; i++){
 			flags[i] = false;
+			graph[i] = new int[N];
 			nodes[i] = std::numeric_limits<int>::max();
+			graphTxtBox[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
 			for(int j = 0; j < N; j++){
-				this->label2->Text = this->label2->Text + graph[i][j] + " ";
+				System::Windows::Forms::TextBox^ GraphS = (gcnew System::Windows::Forms::TextBox());
+				GraphS->Location = System::Drawing::Point(16+(j*25), 220+(i*25));
+				GraphS->Name = L"GraphS"+i+"_"+j;
+				GraphS->Size = System::Drawing::Size(20, 20);
+				GraphS->TabIndex = i;
+				GraphS->Tag = j;
+				GraphS->TextChanged += gcnew System::EventHandler(this, &MyForm::GraphS_TextChanged);
+				if(i==j)
+					GraphS->Text = "0";
+				graphTxtBox[i][j] = GraphS;
+				this->Controls->Add(GraphS);
 			}
-			this-> label2->Text += "\n";
+		}
+	}
+	private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e){
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e){
+		for(int i = 0; i < N; i++){
+			flags[i] = false;
+			nodes[i] = std::numeric_limits<int>::max();
 		}
 		nodes[0] = 0;
-		int min = std::numeric_limits<int>::max(), minI = 0;
-		/*for(int j = 0; j < N; j++){
-			if((graph[0][j] != 0) && (graph[0][j] < nodes[j])){
-				nodes[j] = graph[0][j];
-			}
-		}
-		for(int i = 0; i < N; i++){
-			this->label3->Text = this->label3->Text + nodes[i] + " ";
-		}
-		flags[0] = true;*/
+		int min, minI;
 		for(int i = 0; i < N; i++){
 			min = std::numeric_limits<int>::max(), minI = 0;
 			this->label3->Text = "";
 			for(int j = 0; j < N; j++){
-				if((!flags[j])&&(nodes[j] < min)){
+				if((!flags[j]) && (nodes[j] < min)){
 					min = nodes[j];
 					minI = j;
 				}
 			}
 			for(int j = 0; j < N; j++){
 				if(!flags[j]){
-					if((graph[minI][j] != 0) && ((graph[minI][j]+nodes[minI]) < nodes[j])){
+					if((graph[minI][j] != 0) && ((graph[minI][j] + nodes[minI]) < nodes[j])){
 						nodes[j] = graph[minI][j] + nodes[minI];
 					}
 				}
@@ -203,7 +214,63 @@ namespace SIACODERGR {
 			flags[minI] = true;
 		}
 	}
-	private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e){
+	private: System::Void GraphS_TextChanged(System::Object^ sender, System::EventArgs^ e){
+		System::Windows::Forms::TextBox^ a = (System::Windows::Forms::TextBox^)sender;
+		graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
+	}
+	private: System::Void numericUpDown1_ValueChanged(System::Object^ sender, System::EventArgs^ e){
+		int a;
+		if(numericUpDown1->Value > N)
+			a = N;
+		else
+			a = 0;
+		for(int j = 0; j < N; j++){
+			delete[](graph[j]);
+		}
+		delete[](graph);
+		delete[](nodes);
+		delete[](flags);
+		int prev = N;
+		N = Convert::ToInt32(numericUpDown1->Value);
+		graph = new int*[N];
+		nodes = new int[N];
+		flags = new bool[N];
+		for(int i = 0; i < N; i++){
+			graph[i] = new int[N];
+		}
+		if(a!=0){
+			for(int i = 0; i < N-1; i++){
+				for(int j = i; j < N-1; j++){
+					this->Controls->Remove(graphTxtBox[i][j]);
+				}
+			}
+			graphTxtBox = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
+			for(int i=0; i < N; i++){
+				graphTxtBox[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
+				for(int j = 0; j < N; j++){
+					System::Windows::Forms::TextBox^ GraphS = (gcnew System::Windows::Forms::TextBox());
+					GraphS->Location = System::Drawing::Point(16 + (j * 25), 220 + (i * 25));
+					GraphS->Name = L"GraphS" + i + "_" + j;
+					GraphS->Size = System::Drawing::Size(20, 20);
+					GraphS->TabIndex = i;
+					GraphS->Tag = j;
+					GraphS->TextChanged += gcnew System::EventHandler(this, &MyForm::GraphS_TextChanged);
+					if(i == j)
+						GraphS->Text = "0";
+					graphTxtBox[i][j] = GraphS;
+					this->Controls->Add(GraphS);
+				}
+			}
+		}
+		else{
+			for(int i = 0; i < N+1; i++){
+				for(int j = 0; j < N+1; j++){
+					if((i == N) || (j == N)){
+						this->Controls->Remove(graphTxtBox[i][j]);
+					}
+				}
+			}
+		}
 	}
 };
 }
