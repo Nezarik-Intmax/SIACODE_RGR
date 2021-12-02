@@ -118,6 +118,7 @@ namespace SIACODERGR {
 			this->textBox1->Size = System::Drawing::Size(100, 20);
 			this->textBox1->TabIndex = 4;
 			this->textBox1->Tag = L"1";
+			this->textBox1->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// numericUpDown1
 			// 
@@ -155,31 +156,46 @@ namespace SIACODERGR {
 	int *nodes;
 	bool *flags;
 	int N = 3;
-	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBox;
-	//System::Windows::Forms::TextBox ^graphTxtBox[N];
+	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBoxS;
+	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBoxP;
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e){
 		graph = new int*[N];
 		nodes = new int[N];
 		flags = new bool[N];
-		graphTxtBox = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
+		graphTxtBoxS = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
+		graphTxtBoxP = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
 
 		for(int i = 0; i < N; i++){
 			flags[i] = false;
 			graph[i] = new int[N];
 			nodes[i] = std::numeric_limits<int>::max();
-			graphTxtBox[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
+			graphTxtBoxS[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
+			graphTxtBoxP[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
 			for(int j = 0; j < N; j++){
+				graph[i][j] = 0;
 				System::Windows::Forms::TextBox^ GraphS = (gcnew System::Windows::Forms::TextBox());
-				GraphS->Location = System::Drawing::Point(16+(j*25), 220+(i*25));
+				GraphS->Location = System::Drawing::Point(16+(j*75), 220+(i*50));
 				GraphS->Name = L"GraphS"+i+"_"+j;
 				GraphS->Size = System::Drawing::Size(20, 20);
 				GraphS->TabIndex = i;
 				GraphS->Tag = j;
+				GraphS->Text = "0";
 				GraphS->TextChanged += gcnew System::EventHandler(this, &MyForm::GraphS_TextChanged);
-				if(i==j)
-					GraphS->Text = "0";
-				graphTxtBox[i][j] = GraphS;
+				GraphS->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+				graphTxtBoxS[i][j] = GraphS;
 				this->Controls->Add(GraphS);
+
+				System::Windows::Forms::TextBox^ GraphP = (gcnew System::Windows::Forms::TextBox());
+				GraphP->Location = System::Drawing::Point(41 + (j * 75), 220 + (i * 50));
+				GraphP->Name = L"GraphS" + i + "_" + j;
+				GraphP->Size = System::Drawing::Size(20, 20);
+				GraphP->TabIndex = i;
+				GraphP->Tag = j;
+				GraphP->Text = "0";
+				GraphP->TextChanged += gcnew System::EventHandler(this, &MyForm::GraphP_TextChanged);
+				GraphP->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+				graphTxtBoxP[i][j] = GraphP;
+				this->Controls->Add(GraphP);
 			}
 		}
 	}
@@ -216,7 +232,19 @@ namespace SIACODERGR {
 	}
 	private: System::Void GraphS_TextChanged(System::Object^ sender, System::EventArgs^ e){
 		System::Windows::Forms::TextBox^ a = (System::Windows::Forms::TextBox^)sender;
-		graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
+		if(a->Text != ""){
+			graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
+			graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
+		}
+		if(a->TabIndex != Convert::ToInt32(a->Tag))
+			graphTxtBoxS[Convert::ToInt32(a->Tag)][a->TabIndex]->Text = a->Text;
+	}
+	private: System::Void GraphP_TextChanged(System::Object^ sender, System::EventArgs^ e){
+		System::Windows::Forms::TextBox^ a = (System::Windows::Forms::TextBox^)sender;
+		/*graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
+		graph[Convert::ToInt32(a->Tag)][a->TabIndex] = Convert::ToInt32(a->Text);*/
+		if(a->TabIndex != Convert::ToInt32(a->Tag))
+			graphTxtBoxP[Convert::ToInt32(a->Tag)][a->TabIndex]->Text = a->Text;
 	}
 	private: System::Void numericUpDown1_ValueChanged(System::Object^ sender, System::EventArgs^ e){
 		int a;
@@ -240,25 +268,41 @@ namespace SIACODERGR {
 		}
 		if(a!=0){
 			for(int i = 0; i < N-1; i++){
-				for(int j = i; j < N-1; j++){
-					this->Controls->Remove(graphTxtBox[i][j]);
+				for(int j = 0; j < N-1; j++){
+					this->Controls->Remove(graphTxtBoxS[i][j]);
+					this->Controls->Remove(graphTxtBoxP[i][j]);
 				}
 			}
-			graphTxtBox = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
+			graphTxtBoxS = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
+			graphTxtBoxP = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
 			for(int i=0; i < N; i++){
-				graphTxtBox[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
+				graphTxtBoxS[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
+				graphTxtBoxP[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
 				for(int j = 0; j < N; j++){
+					graph[i][j] = 0;
 					System::Windows::Forms::TextBox^ GraphS = (gcnew System::Windows::Forms::TextBox());
-					GraphS->Location = System::Drawing::Point(16 + (j * 25), 220 + (i * 25));
+					GraphS->Location = System::Drawing::Point(16 + (j * 75), 220 + (i * 50));
 					GraphS->Name = L"GraphS" + i + "_" + j;
 					GraphS->Size = System::Drawing::Size(20, 20);
 					GraphS->TabIndex = i;
 					GraphS->Tag = j;
+					GraphS->Text = "0";
 					GraphS->TextChanged += gcnew System::EventHandler(this, &MyForm::GraphS_TextChanged);
-					if(i == j)
-						GraphS->Text = "0";
-					graphTxtBox[i][j] = GraphS;
+					GraphS->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+					graphTxtBoxS[i][j] = GraphS;
 					this->Controls->Add(GraphS);
+
+					System::Windows::Forms::TextBox^ GraphP = (gcnew System::Windows::Forms::TextBox());
+					GraphP->Location = System::Drawing::Point(41 + (j * 75), 220 + (i * 50));
+					GraphP->Name = L"GraphS" + i + "_" + j;
+					GraphP->Size = System::Drawing::Size(20, 20);
+					GraphP->TabIndex = i;
+					GraphP->Tag = j;
+					GraphP->Text = "0";
+					GraphP->TextChanged += gcnew System::EventHandler(this, &MyForm::GraphP_TextChanged);
+					GraphP->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+					graphTxtBoxP[i][j] = GraphP;
+					this->Controls->Add(GraphP);
 				}
 			}
 		}
@@ -266,8 +310,10 @@ namespace SIACODERGR {
 			for(int i = 0; i < N+1; i++){
 				for(int j = 0; j < N+1; j++){
 					if((i == N) || (j == N)){
-						this->Controls->Remove(graphTxtBox[i][j]);
-					}
+						this->Controls->Remove(graphTxtBoxS[i][j]);
+						this->Controls->Remove(graphTxtBoxP[i][j]);
+					}else
+						graph[i][j] = 0;
 				}
 			}
 		}
