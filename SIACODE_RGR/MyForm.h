@@ -238,15 +238,15 @@ namespace SIACODERGR {
 		System::Windows::Forms::TextBox^ a = (System::Windows::Forms::TextBox^)sender;
 		if(a->Text != ""){
 			graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
-			graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
 		}
 		if(a->TabIndex != Convert::ToInt32(a->Tag))
 			graphTxtBoxS[Convert::ToInt32(a->Tag)][a->TabIndex]->Text = a->Text;
 	}
 	private: System::Void GraphP_TextChanged(System::Object^ sender, System::EventArgs^ e){
 		System::Windows::Forms::TextBox^ a = (System::Windows::Forms::TextBox^)sender;
-		/*graph[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
-		graph[Convert::ToInt32(a->Tag)][a->TabIndex] = Convert::ToInt32(a->Text);*/
+		if(a->Text != ""){
+			graphP[a->TabIndex][Convert::ToInt32(a->Tag)] = Convert::ToInt32(a->Text);
+		}
 		if(a->TabIndex != Convert::ToInt32(a->Tag))
 			graphTxtBoxP[Convert::ToInt32(a->Tag)][a->TabIndex]->Text = a->Text;
 	}
