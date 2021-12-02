@@ -153,6 +153,7 @@ namespace SIACODERGR {
 
 
 	int **graph;
+	int** graphP;
 	int *nodes;
 	bool *flags;
 	int N = 3;
@@ -160,6 +161,7 @@ namespace SIACODERGR {
 	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBoxP;
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e){
 		graph = new int*[N];
+		graphP = new int*[N];
 		nodes = new int[N];
 		flags = new bool[N];
 		graphTxtBoxS = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
@@ -168,11 +170,13 @@ namespace SIACODERGR {
 		for(int i = 0; i < N; i++){
 			flags[i] = false;
 			graph[i] = new int[N];
+			graphP[i] = new int[N];
 			nodes[i] = std::numeric_limits<int>::max();
 			graphTxtBoxS[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
 			graphTxtBoxP[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
 			for(int j = 0; j < N; j++){
 				graph[i][j] = 0;
+				graphP[i][j] = 0;
 				System::Windows::Forms::TextBox^ GraphS = (gcnew System::Windows::Forms::TextBox());
 				GraphS->Location = System::Drawing::Point(16+(j*75), 220+(i*50));
 				GraphS->Name = L"GraphS"+i+"_"+j;
@@ -219,8 +223,8 @@ namespace SIACODERGR {
 			}
 			for(int j = 0; j < N; j++){
 				if(!flags[j]){
-					if((graph[minI][j] != 0) && ((graph[minI][j] + nodes[minI]) < nodes[j])){
-						nodes[j] = graph[minI][j] + nodes[minI];
+					if((graph[minI][j] != 0) && ((graph[minI][j] + graphP[minI][j] + nodes[minI]) < nodes[j])){
+						nodes[j] = graph[minI][j] + graphP[minI][j] + nodes[minI];
 					}
 				}
 			}
@@ -254,17 +258,21 @@ namespace SIACODERGR {
 			a = 0;
 		for(int j = 0; j < N; j++){
 			delete[](graph[j]);
+			delete[](graphP[j]);
 		}
 		delete[](graph);
+		delete[](graphP);
 		delete[](nodes);
 		delete[](flags);
 		int prev = N;
 		N = Convert::ToInt32(numericUpDown1->Value);
 		graph = new int*[N];
+		graphP = new int*[N];
 		nodes = new int[N];
 		flags = new bool[N];
 		for(int i = 0; i < N; i++){
 			graph[i] = new int[N];
+			graphP[i] = new int[N];
 		}
 		if(a!=0){
 			for(int i = 0; i < N-1; i++){
@@ -280,6 +288,7 @@ namespace SIACODERGR {
 				graphTxtBoxP[i] = gcnew array<System::Windows::Forms::TextBox^>(N);
 				for(int j = 0; j < N; j++){
 					graph[i][j] = 0;
+					graphP[i][j] = 0;
 					System::Windows::Forms::TextBox^ GraphS = (gcnew System::Windows::Forms::TextBox());
 					GraphS->Location = System::Drawing::Point(16 + (j * 75), 220 + (i * 50));
 					GraphS->Name = L"GraphS" + i + "_" + j;
