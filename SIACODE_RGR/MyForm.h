@@ -46,7 +46,7 @@ namespace SIACODERGR {
 
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Button^ button1;
-	private: System::Windows::Forms::TextBox^ textBox1;
+
 	private: System::Windows::Forms::NumericUpDown^ numericUpDown1;
 
 
@@ -73,7 +73,6 @@ namespace SIACODERGR {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
 			this->SuspendLayout();
@@ -111,15 +110,6 @@ namespace SIACODERGR {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
-			// textBox1
-			// 
-			this->textBox1->Location = System::Drawing::Point(824, 173);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(100, 20);
-			this->textBox1->TabIndex = 4;
-			this->textBox1->Tag = L"1";
-			this->textBox1->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			// 
 			// numericUpDown1
 			// 
 			this->numericUpDown1->Location = System::Drawing::Point(16, 173);
@@ -137,7 +127,6 @@ namespace SIACODERGR {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(931, 580);
 			this->Controls->Add(this->numericUpDown1);
-			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label1);
