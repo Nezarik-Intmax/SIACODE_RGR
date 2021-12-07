@@ -156,6 +156,8 @@ namespace SIACODERGR {
 	int** graphP;
 	int *nodes;
 	bool *flags;
+	int* path;
+	array <String^>^ pathS;
 	int N = 3;
 	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBoxS;
 	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBoxP;
@@ -163,12 +165,15 @@ namespace SIACODERGR {
 		graph = new int*[N];
 		graphP = new int*[N];
 		nodes = new int[N];
+		path = new int[N];
 		flags = new bool[N];
+		pathS = gcnew array<String^>(N);
 		graphTxtBoxS = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
 		graphTxtBoxP = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
-
+		//th
 		for(int i = 0; i < N; i++){
 			flags[i] = false;
+			path[i] = 0;
 			graph[i] = new int[N];
 			graphP[i] = new int[N];
 			nodes[i] = std::numeric_limits<int>::max();
@@ -209,6 +214,7 @@ namespace SIACODERGR {
 		for(int i = 0; i < N; i++){
 			flags[i] = false;
 			nodes[i] = std::numeric_limits<int>::max();
+			pathS[i] = "";
 		}
 		nodes[0] = 0;
 		int min, minI;
@@ -225,13 +231,16 @@ namespace SIACODERGR {
 				if(!flags[j]){
 					if((graph[minI][j] != 0) && ((graph[minI][j] + graphP[minI][j] + nodes[minI]) < nodes[j])){
 						nodes[j] = graph[minI][j] + graphP[minI][j] + nodes[minI];
+						path[j] = minI;
+						pathS[j] += minI + "->";
 					}
 				}
 			}
-			for(int o = 0; o < N; o++){
-				this->label3->Text += nodes[o] + " ";
-			}
 			flags[minI] = true;
+		}
+		for(int o = 0; o < N; o++){
+			pathS[o] += o;
+			this->label3->Text += "S+P = " + nodes[o] + " \n" + pathS[o] + "\n\n";
 		}
 	}
 	private: System::Void GraphS_TextChanged(System::Object^ sender, System::EventArgs^ e){
@@ -264,12 +273,15 @@ namespace SIACODERGR {
 		delete[](graphP);
 		delete[](nodes);
 		delete[](flags);
+		delete[](path);
 		int prev = N;
 		N = Convert::ToInt32(numericUpDown1->Value);
 		graph = new int*[N];
 		graphP = new int*[N];
 		nodes = new int[N];
+		path = new int[N];
 		flags = new bool[N];
+		pathS = gcnew array<String^>(N);
 		for(int i = 0; i < N; i++){
 			graph[i] = new int[N];
 			graphP[i] = new int[N];
