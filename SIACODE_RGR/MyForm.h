@@ -145,7 +145,6 @@ namespace SIACODERGR {
 	int** graphP;
 	int *nodes;
 	bool *flags;
-	int* path;
 	array <String^>^ pathS;
 	int N = 3;
 	array<array<System::Windows::Forms::TextBox^>^>^ graphTxtBoxS;
@@ -154,15 +153,12 @@ namespace SIACODERGR {
 		graph = new int*[N];
 		graphP = new int*[N];
 		nodes = new int[N];
-		path = new int[N];
 		flags = new bool[N];
 		pathS = gcnew array<String^>(N);
 		graphTxtBoxS = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
 		graphTxtBoxP = gcnew array<array<System::Windows::Forms::TextBox^>^>(N);
-		//th
 		for(int i = 0; i < N; i++){
 			flags[i] = false;
-			path[i] = 0;
 			graph[i] = new int[N];
 			graphP[i] = new int[N];
 			nodes[i] = std::numeric_limits<int>::max();
@@ -209,7 +205,6 @@ namespace SIACODERGR {
 		int min, minI;
 		for(int i = 0; i < N; i++){
 			min = std::numeric_limits<int>::max(), minI = 0;
-			this->label3->Text = "";
 			for(int j = 0; j < N; j++){
 				if((!flags[j]) && (nodes[j] < min)){
 					min = nodes[j];
@@ -220,13 +215,13 @@ namespace SIACODERGR {
 				if(!flags[j]){
 					if((graph[minI][j] != 0) && ((graph[minI][j] + graphP[minI][j] + nodes[minI]) < nodes[j])){
 						nodes[j] = graph[minI][j] + graphP[minI][j] + nodes[minI];
-						path[j] = minI;
 						pathS[j] += minI + "->";
 					}
 				}
 			}
 			flags[minI] = true;
 		}
+		this->label3->Text = "";
 		for(int o = 0; o < N; o++){
 			pathS[o] += o;
 			this->label3->Text += "S+P = " + nodes[o] + " \n" + pathS[o] + "\n\n";
@@ -262,13 +257,11 @@ namespace SIACODERGR {
 		delete[](graphP);
 		delete[](nodes);
 		delete[](flags);
-		delete[](path);
 		int prev = N;
 		N = Convert::ToInt32(numericUpDown1->Value);
 		graph = new int*[N];
 		graphP = new int*[N];
 		nodes = new int[N];
-		path = new int[N];
 		flags = new bool[N];
 		pathS = gcnew array<String^>(N);
 		for(int i = 0; i < N; i++){
@@ -322,8 +315,10 @@ namespace SIACODERGR {
 					if((i == N) || (j == N)){
 						this->Controls->Remove(graphTxtBoxS[i][j]);
 						this->Controls->Remove(graphTxtBoxP[i][j]);
-					}else
+					}else{
 						graph[i][j] = 0;
+						graphP[i][j] = 0;
+					}
 				}
 			}
 		}
